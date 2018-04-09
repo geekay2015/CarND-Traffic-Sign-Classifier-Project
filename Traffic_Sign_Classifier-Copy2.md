@@ -1,155 +1,43 @@
 
-# Self-Driving Car Engineer Nanodegree
+# Gangadhar's Traffic Sign Recognition using Neural Network
 
-## Deep Learning
+##Build a Traffic Sign Recognition Project
 
-## Project: Build a Traffic Sign Recognition Classifier
+**The goals / steps of this project are the following:
 
-In this notebook, a template is provided for you to implement your functionality in stages, which is required to successfully complete this project. If additional code is required that cannot be included in the notebook, be sure that the Python code is successfully imported and included in your submission if necessary. 
-
-> **Note**: Once you have completed all of the code implementations, you need to finalize your work by exporting the iPython Notebook as an HTML document. Before exporting the notebook to html, all of the code cells need to have been run so that reviewers can see the final implementation and output. You can then export the notebook by using the menu above and navigating to  \n",
-    "**File -> Download as -> HTML (.html)**. Include the finished document along with this notebook as your submission. 
-
-In addition to implementing code, there is a writeup to complete. The writeup should be completed in a separate file, which can be either a markdown file or a pdf document. There is a [write up template](https://github.com/udacity/CarND-Traffic-Sign-Classifier-Project/blob/master/writeup_template.md) that can be used to guide the writing process. Completing the code template and writeup template will cover all of the [rubric points](https://review.udacity.com/#!/rubrics/481/view) for this project.
-
-The [rubric](https://review.udacity.com/#!/rubrics/481/view) contains "Stand Out Suggestions" for enhancing the project beyond the minimum requirements. The stand out suggestions are optional. If you decide to pursue the "stand out suggestions", you can include the code in this Ipython notebook and also discuss the results in the writeup file.
+Load the data set (see below for links to the project data set)
+Explore, summarize and visualize the data set
+Design, train and test a model architecture
+Use the model to make predictions on new images
+Analyze the softmax probabilities of the new images
+Summarize the results with a written report
 
 
->**Note:** Code and Markdown cells can be executed using the **Shift + Enter** keyboard shortcut. In addition, Markdown cells can be edited by typically double-clicking the cell to enter edit mode.
+# Rubric Points
 
----
-## Step 0: Load The Data
+## Here I will consider the rubric points individually and describe how I addressed each point in my implementation. This is a summary. Continue further to read each in depth.
 
+1. Files submitted, from everything I read a HTML file, notebook, and write up file is required. So this will meet requirements.
+2. Dataset summary & visualization, the rubric is referring to explaining the size of the dataset and shape of the data therein. It also would like visual explorations.
+3 .Design & test model: which includes preprocessing, model architecture, training, and solution. This was basically given to us for the most part in the with LeNet. The preprocessing from what I have read is many common tasks especially in the paper referenced by the instructors. It outlined the types of data preprocessing and I have tried to implement as much I could time permitting. This includes changing from 3 color channels to 1 so grayscale and then also normalizing the image data so it is smaller numbers. I also did some random augmentation mostly slight edging of the image in random directions, or tilting and then adding those new images to the data set and redistributing it to the train and validation sets while leaving the test set alone. For training again this was basically given using the AdamOptimizer. It worked really well so I didn't change it from the last quiz before this project. The more important parts of the training in the instance I think is the epoch which was 27 and batch size was 158. I also used a learning rate of 0.00097 because it gave good results. Lastly in regards to the solution, or model design I used the default given to me except I did add two drops outs and adjusted the size of the layers to better represent the actual data since it is 32x32 and not 28x28. I also added another convolution.
+4. Test model on new images, I found new images on the internet and tried to find images that were already classified out of the 43 classes. It wasn't difficult, but at first I did try images that were very difficult to classify and it didn't do that well. After I found images of signs that were severely damaged it identified the images fairly well. I did scale my images perfectly to 32x32 as well which is probably some what limiting to real scenarios. Finally I also show the probabilities reduced for softmax probabilities and also individual performance along with total performance for all.
 
-```python
-# Load pickled data
-import pickle
+# Data Set Summary & Exploration
 
-# TODO: Fill this in based on where you saved the training and testing data
+1. Provide a basic summary of the data set and identify where in your code the summary was done. In the code, the analysis should be done using python, numpy and/or pandas methods rather than hardcoding results manually.
 
-training_file = "train.p"
-validation_file= "valid.p"
-testing_file = "test.p"
+The code for this step is contained in the second code cell of the IPython notebook.
 
-with open(training_file, mode='rb') as f:
-    train = pickle.load(f)
-with open(validation_file, mode='rb') as f:
-    valid = pickle.load(f)
-with open(testing_file, mode='rb') as f:
-    test = pickle.load(f)
-    
-X_train, y_train = train['features'], train['labels']
-X_valid, y_valid = valid['features'], valid['labels']
-X_test, y_test = test['features'], test['labels']
+I used the numpy library to calculate summary statistics of the traffic signs data set:
+The size of training set is 34799
+The size of test set is 12630
+The shape of a traffic sign image is (32, 32, 3)
+The number of unique classes/labels in the data set is 43
+2. Include an exploratory visualization of the dataset and identify where the code is in your code file.
 
+The code for this step is contained in the third code cell of the IPython notebook.
 
-print("X_train shape:", X_train.shape)
-print("y_train shape:", y_train.shape)
-
-print("X_valid shape:", X_valid.shape)
-print("y_valid shape:", y_valid.shape)
-
-print("X_test shape:", X_test.shape)
-print("y_test shape:", y_test.shape)
-```
-
-    X_train shape: (34799, 32, 32, 3)
-    y_train shape: (34799,)
-    X_valid shape: (4410, 32, 32, 3)
-    y_valid shape: (4410,)
-    X_test shape: (12630, 32, 32, 3)
-    y_test shape: (12630,)
-
-
----
-
-## Step 1: Dataset Summary & Exploration
-
-The pickled data is a dictionary with 4 key/value pairs:
-
-- `'features'` is a 4D array containing raw pixel data of the traffic sign images, (num examples, width, height, channels).
-- `'labels'` is a 1D array containing the label/class id of the traffic sign. The file `signnames.csv` contains id -> name mappings for each id.
-- `'sizes'` is a list containing tuples, (width, height) representing the original width and height the image.
-- `'coords'` is a list containing tuples, (x1, y1, x2, y2) representing coordinates of a bounding box around the sign in the image. **THESE COORDINATES ASSUME THE ORIGINAL IMAGE. THE PICKLED DATA CONTAINS RESIZED VERSIONS (32 by 32) OF THESE IMAGES**
-
-Complete the basic data summary below. Use python, numpy and/or pandas methods to calculate the data summary rather than hard coding the results. For example, the [pandas shape method](http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.shape.html) might be useful for calculating some of the summary results. 
-
-### Provide a Basic Summary of the Data Set Using Python, Numpy and/or Pandas
-
-
-```python
-### Replace each question mark with the appropriate value. 
-### Use python, pandas or numpy methods rather than hard coding the results
-import numpy as np
-
-# Number of training examples
-n_train = X_train.shape[0]
-
-# Number of testing examples.
-n_test = X_test.shape[0]
-
-# What's the shape of an traffic sign image?
-image_shape = X_train.shape[1:]
-
-# How many unique classes/labels there are in the dataset.
-n_classes = len(np.unique(y_train))
-
-print("Number of training examples =", n_train)
-print("Number of testing examples =", n_test)
-print("Image data shape =", image_shape)
-print("Number of classes =", n_classes)
-```
-
-    Number of training examples = 34799
-    Number of testing examples = 12630
-    Image data shape = (32, 32, 3)
-    Number of classes = 43
-
-
-
-Visualize the German Traffic Signs Dataset using the pickled file(s). This is open ended, suggestions include: plotting traffic sign images, plotting the count of each sign, etc. 
-
-The [Matplotlib](http://matplotlib.org/) [examples](http://matplotlib.org/examples/index.html) and [gallery](http://matplotlib.org/gallery.html) pages are a great resource for doing visualizations in Python.
-
-**NOTE:** It's recommended you start with something simple first. If you wish to do more, come back to it after you've completed the rest of the sections. It can be interesting to look at the distribution of classes in the training, validation and test set. Is the distribution the same? Are there more examples of some classes than others?
-
-
-```python
-### Data exploration visualization code goes here.
-### Feel free to use as many code cells as needed.
-import matplotlib.pyplot as plt
-# Visualizations will be shown in the notebook.
-%matplotlib inline
-import random
-import csv
-
-def plot_figures(figures, nrows = 1, ncols=1, labels=None):
-    fig, axs = plt.subplots(ncols=ncols, nrows=nrows, figsize=(12, 14))
-    axs = axs.ravel()
-    for index, title in zip(range(len(figures)), figures):
-        axs[index].imshow(figures[title], plt.gray())
-        if(labels != None):
-           axs[index].set_title(labels[index])
-        else:
-            axs[index].set_title(title)
-            
-        axs[index].set_axis_off()
-        
-    plt.tight_layout()
-    
-name_values = np.genfromtxt('signnames.csv', skip_header=1, dtype=[('myint','i8'), ('mysring','S55')], delimiter=',')
-    
-number_to_stop = 8
-figures = {}
-labels = {}
-for i in range(number_to_stop):
-    index = random.randint(0, n_train-1)
-    labels[i] = name_values[y_train[index]][1].decode('ascii')
-#     print(name_values[y_train[index]][1].decode('ascii'))
-    figures[i] = X_train[index]
-    
-plot_figures(figures, 4, 2, labels)
-```
+Here is an exploratory visualization of the data set. It pulls in a random set of eight images and labels them with the correct names in reference with the csv file to their respective id's.
 
 
 ![png](Traffic_Sign_Classifier-Copy2_files/Traffic_Sign_Classifier-Copy2_7_0.png)
