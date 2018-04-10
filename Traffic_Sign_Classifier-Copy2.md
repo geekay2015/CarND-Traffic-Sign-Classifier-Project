@@ -14,10 +14,10 @@ The goals / steps of this project are the following:
 * Summarize the results with a written report
 
 ## Highlights of this approach
-* The traffic sign dataset that we will be working on is GTSRB — German Traffic Signs.
+* The traffic sign dataset used is German Traffic Signs dataset.
 * The approach used is deep learning.
 * The type of neural network used is a Convolutional Neural Network (CNN) paired with a Linear classifier.
-* The architecture used will be an adaptation of the VGGNet.
+* The architecture used will be an adaptation of the LeNet.
 * Python is the language used to program this.
 * The complete source code can be found [here](https://github.com/geekay2015/CarND-Traffic-Sign-Classifier-Project/blob/master/Traffic_Sign_Classifier.ipynb)
 
@@ -76,7 +76,7 @@ My preprocessing pipeline consists of the following steps:
 * Min/max normalization to the [0, 1] range.
 * Subtraction of its mean from the image, making the values centered around 0 and in the [-1, 1] range.
 
-Here is an example of a traffic sign images that were randomly selected.
+Here is an example of a traffic sign images that were randomly selected and gray scaled
 
 ![png](Traffic_Sign_Classifier-Copy2_files/Traffic_Sign_Classifier-Copy2_14_0.png)
 
@@ -84,16 +84,14 @@ Here is a look at the normalized images. Which should look identical, but for so
 
 ![png](Traffic_Sign_Classifier-Copy2_files/Traffic_Sign_Classifier-Copy2_16_0.png)
 
+![png](Traffic_Sign_Classifier-Copy2_files/Traffic_Sign_Classifier-Copy2_17_1.png)
+![png](Traffic_Sign_Classifier-Copy2_files/Traffic_Sign_Classifier-Copy2_17_2.png)
+![png](Traffic_Sign_Classifier-Copy2_files/Traffic_Sign_Classifier-Copy2_17_3.png)
+
+![png](Traffic_Sign_Classifier-Copy2_files/Traffic_Sign_Classifier-Copy2_18_0.png)
 
 #### Model Architecture
 My architecture is a deep convolutional neural network inspired by LeNet[1].I used LeNet as my base model and started playing with it. This is the point where I experimented a lot and tried to tune the parameter in the network
-
-
-In addition, two additional functions/parameters to the network to help combat overfitting. The first is a dropout layer (thanks Professor Hinton!). Dropout applies a Bernoulli distribution to activations (i.e. the values being passed) during the feed-forward phase - essentially zeroing values randomly by p, where p is the probability the activation will be passed forward successfully. By applying dropout, the network is forced to confirm the values it produces again and again, so that anything that persists is a very generalized signal and not "training-sample-specific" noise.
-
-During training, p was set to 0.5. There is an ample amount of training data to make up for the low probability of successfully passing the activation.
-
-Lastly, I applied L2 regularization to my Cross Entropy error when updating my weights. L2 regularization is used to penalize large errors. By doing this, we prevent our weights from changing too much, too quickly and overfitting our training sample. I used a L2 "strength" of 1E−6.
 
 My final model consisted of the following layers:
 
@@ -138,101 +136,63 @@ I saved the model with the best validation accuracy. My final model results were
 * validation set accuracy of 99.4%
 * test set accuracy of 94.9%
 
-
 ![png](Traffic_Sign_Classifier-Copy2_files/Traffic_Sign_Classifier-Copy2_26_0.png)
 ![png](Traffic_Sign_Classifier-Copy2_files/Traffic_Sign_Classifier-Copy2_26_1.png)
 
 
-
 #### Solution Approach
 The submission describes the approach to finding a solution. Accuracy on the validation set is 0.93 or greater.
-
-
 My final model results were:
 * training set accuracy of 100.0%
-* validation set accuracy of 99.3%
-* test set accuracy of 94.2%
+* validation set accuracy of 99.4%
+* test set accuracy of 94.9%
 
 ### Testing my model on New images
 ----
 #### Acquiring New Images
-The submission includes five new German Traffic signs found on the web, and the images are visualized. Discussion is made as to particular qualities of the images or traffic signs in the images that are of interest, such as whether they would be difficult for the model to classify.
-Here is an example of 1 image I changed at random. More can be seen further in the document, but the original is on the right and the randomized opencv affine change is on the left. Small rotations are also visible further along as stated.
-
-To give yourself more insight into how your model is working, download at least five pictures of German traffic signs from the web and use your model to predict the traffic sign type.
-
-You may find `signnames.csv` useful as it contains mappings from the class id (integer) to the actual sign name.
-
-
-
+The submission includes below new German Traffic signs found on the web, and the images are visualized. 
 ![png](Traffic_Sign_Classifier-Copy2_files/Traffic_Sign_Classifier-Copy2_30_0.png)
 
-
-
-
-
+Normalized the test images
 ![png](Traffic_Sign_Classifier-Copy2_files/Traffic_Sign_Classifier-Copy2_31_0.png)
 
+
 #### Performance on New Images
-The submission documents the performance of the model when tested on the captured images. The performance on the new images is compared to the accuracy results of the test set.
-    Image 1
-    Image Accuracy = 1.000
+My model predicted 6 out of 6 signs correctly, 
+The performance on the new images is compared to the accuracy results of the test set is as below:
+   
+   Image 1
+   Image Accuracy = 1.000
+
+   Image 2
+   Image Accuracy = 1.000
+
+   Image 3
+   Image Accuracy = 1.000
+
+   Image 4
+   Image Accuracy = 1.000
+
+   Image 5
+   Image Accuracy = 1.000
+
+   Image 6
+   Image Accuracy = 1.000
     
-    Image 2
-    Image Accuracy = 1.000
-    
-    Image 3
-    Image Accuracy = 1.000
-    
-    Image 4
-    Image Accuracy = 1.000
-    
-    Image 5
-    Image Accuracy = 1.000
-    
-    Image 6
 #### Model Certainty - Softmax Probabilities
-The top five softmax probabilities of the predictions on the captured images are outputted. The submission discusses how certain or uncertain the model is of its predictions.
+The top five softmax probabilities of the predictions on the captured images are outputted. 
+
 ![png](Traffic_Sign_Classifier-Copy2_files/Traffic_Sign_Classifier-Copy2_38_0.png)
-
-
 
 ![png](Traffic_Sign_Classifier-Copy2_files/Traffic_Sign_Classifier-Copy2_38_1.png)
 
-
-
 ![png](Traffic_Sign_Classifier-Copy2_files/Traffic_Sign_Classifier-Copy2_38_2.png)
-
-
 
 ![png](Traffic_Sign_Classifier-Copy2_files/Traffic_Sign_Classifier-Copy2_38_3.png)
 
-
-
 ![png](Traffic_Sign_Classifier-Copy2_files/Traffic_Sign_Classifier-Copy2_38_4.png)
 
-
-
 ![png](Traffic_Sign_Classifier-Copy2_files/Traffic_Sign_Classifier-Copy2_38_5.png)
-
-I increased the train dataset size to 89860 and also merged and then remade another validation dataset.  Now no image class in the train set has less then 1000 images
-
-![png](Traffic_Sign_Classifier-Copy2_files/Traffic_Sign_Classifier-Copy2_17_1.png)
-
-
-
-![png](Traffic_Sign_Classifier-Copy2_files/Traffic_Sign_Classifier-Copy2_17_2.png)
-
-Validation set gained 20% of the original total mentioned above.  I did this using scikit learns train test split method.
-
-![png](Traffic_Sign_Classifier-Copy2_files/Traffic_Sign_Classifier-Copy2_17_3.png)
-
-
-I increased the train dataset size to 89860 and also merged and then remade another validation dataset. Now no image class in the train set has less then 1000 images. Test
-
-
-![png](Traffic_Sign_Classifier-Copy2_files/Traffic_Sign_Classifier-Copy2_18_0.png)
-
 
 
 ### References
