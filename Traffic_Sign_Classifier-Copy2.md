@@ -3,7 +3,7 @@
 
 # Gangadhar's Traffic Sign Recognition using Neural Network
 
-**Build a Traffic Sign Recognition Project**
+**Building a Traffic Sign Recognition Project**
 
 The goals / steps of this project are the following:
 * Load the data set (see below for links to the project data set)
@@ -16,11 +16,11 @@ The goals / steps of this project are the following:
 ### Files Submitted
 ----
 The project submission includes the below file.
-* Ipython notebook [project code](https://github.com/geekay2015/CarND-Traffic-Sign-Classifier-Project/blob/master/Traffic_Sign_Classifier.ipynb)
+* Ipython notebook [Jupyter Notebook](https://github.com/geekay2015/CarND-Traffic-Sign-Classifier-Project/blob/master/Traffic_Sign_Classifier.ipynb)
 
-* HTML output of the code [project code](https://github.com/geekay2015/CarND-Traffic-Sign-Classifier-Project/blob/master/Traffic_Sign_Classifier.html)
+* HTML output of the code [HTML Output](https://github.com/geekay2015/CarND-Traffic-Sign-Classifier-Project/blob/master/Traffic_Sign_Classifier.html)
 
-* A writeup report [project code](https://github.com/geekay2015/CarND-Traffic-Sign-Classifier-Project/blob/master/writup.md)
+* A writeup report [My Project writeup](https://github.com/geekay2015/CarND-Traffic-Sign-Classifier-Project/blob/master/writup.md)
 
 ### Dataset Exploration
 ----
