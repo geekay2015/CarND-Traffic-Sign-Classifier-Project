@@ -98,8 +98,8 @@ Here is a look at the normalized images. Which should look identical, but for so
 
 #### Model Architecture
 
-Original LeNet architecture
-![jpg](LeNet5%20architecture.jpg)
+
+![Original LeNet architecture](https://github.com/geekay2015/CarND-Traffic-Sign-Classifier-Project/blob/master/Traffic_Sign_Classifier-Copy2_files/LeNet5%20architecture.jpg)
 
 My architecture is a deep convolutional neural network inspired by LeNet[1].
 I used LeNet as my base model and started playing with it. This is the point where I experimented a lot and tried to tune the parameter in the network.
