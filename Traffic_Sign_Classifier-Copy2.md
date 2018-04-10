@@ -28,6 +28,7 @@ The goals / steps of this project are the following:
 ----
 
 ### Understand the Dataset
+
 For a classification problem like traffic signs, the first step is to understand that the dataset components
 * Features — The actual data that will be fed into the network / model i.e images containing traffic signs
 * Labels — The category under which the data that is fed, is likely to fall unde i.e the name of the traffic signs
@@ -36,6 +37,12 @@ The per label and across label distribution of data
 * Image type — RGB/ Grayscale , 8 bit/16 bit/ 32 bit datatype
 * The non uniformity in distribution of data( More images in one traffic sign and lesser in another)
 * Even the quality of the images has to come up with a general image pre-processing and augmentation algorithm
+
+The pickled data is a dictionary with 4 key/value pairs:
+'features' is a 4D array containing raw pixel data of the traffic sign images, (num examples, width, height, channels).
+'labels' is a 2D array containing the label/class id of the traffic sign. The file signnames.csv contains id -> name mappings for each id.
+'sizes' is a list containing tuples, (width, height) representing the the original width and height the image.
+'coords' is a list containing tuples, (x1, y1, x2, y2) representing coordinates of a bounding box around the sign in the image. THESE COORDINATES ASSUME THE ORIGINAL IMAGE. THE PICKLED DATA CONTAINS RESIZED VERSIONS (32 by 32) OF THESE IMAGES
 
 #### Dataset Summary
 I used the numpy library to calculate summary statistics of the traffic signs data set:
@@ -71,10 +78,9 @@ After this point I also detail the dataset structure by plotting the occurrence 
 #### Preprocessing Techniques useed
 
 My preprocessing pipeline consists of the following steps:
-* Conversion to grayscale: It didn't significantly change the accuracy, but it made it easier to do the normalization.
-* Saturating the intensity values at 1 and 99 percentile.
-* Min/max normalization to the [0, 1] range.
-* Subtraction of its mean from the image, making the values centered around 0 and in the [-1, 1] range.
+1. Converting to grayscale - This worked well for Sermanet and LeCun as described in their traffic sign classification article. It also helps to reduce training time and can be tried when a GPU is nor available.
+
+2. Normalizing the data to the range (-1,1) - This was done using the line of code X_train_normalized = X_train/127.5-1. I chose to do this mostly because it was suggested in the lessons and it was fairly easy to do. How it helps is a bit nebulous to me, but this site has an explanation, the gist of which is that having a wider distribution in the data would make it more difficult to train using a singlar learning rate. Different features could encompass far different ranges and a single learning rate might make some weights diverge.
 
 Here is an example of a traffic sign images that were randomly selected and gray scaled
 
@@ -91,7 +97,20 @@ Here is a look at the normalized images. Which should look identical, but for so
 ![png](Traffic_Sign_Classifier-Copy2_files/Traffic_Sign_Classifier-Copy2_18_0.png)
 
 #### Model Architecture
-My architecture is a deep convolutional neural network inspired by LeNet[1].I used LeNet as my base model and started playing with it. This is the point where I experimented a lot and tried to tune the parameter in the network
+
+Original LeNet architecture
+![jpg](LeNet5%20architecture.jpg)
+
+My architecture is a deep convolutional neural network inspired by LeNet[1].
+I used LeNet as my base model and started playing with it. This is the point where I experimented a lot and tried to tune the parameter in the network.
+
+LeNet5 model has below features:
+* convolutional neural network use sequence of 3 layers: convolution, pooling, non-linearity –> This is be the key feature of Deep Learning for images
+* uses convolution to extract spatial features
+* subsample using spatial average of maps
+* non-linearity in the form of tanh or sigmoids
+* multi-layer neural network (MLP) as final classifier
+* sparse connection matrix between layers to avoid large computational cost
 
 My final model consisted of the following layers:
 
