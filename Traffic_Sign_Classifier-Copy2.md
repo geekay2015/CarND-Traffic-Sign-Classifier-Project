@@ -15,8 +15,7 @@ The goals / steps of this project are the following:
 
 ## Highlights of this approach
 * The traffic sign dataset used is German Traffic Signs dataset.
-* The approach used is deep learning.
-* The type of neural network used is a Convolutional Neural Network (CNN) paired with a Linear classifier.
+* The approach used is deep learning with Convolutional Neural Network (CNN)
 * The architecture used will be an adaptation of the LeNet.
 * Python is the language used to program this.
 * The complete source code can be found [here](https://github.com/geekay2015/CarND-Traffic-Sign-Classifier-Project/blob/master/Traffic_Sign_Classifier.ipynb)
@@ -43,6 +42,8 @@ The pickled data is a dictionary with 4 key/value pairs:
 'labels' is a 2D array containing the label/class id of the traffic sign. The file signnames.csv contains id -> name mappings for each id.
 'sizes' is a list containing tuples, (width, height) representing the the original width and height the image.
 'coords' is a list containing tuples, (x1, y1, x2, y2) representing coordinates of a bounding box around the sign in the image. THESE COORDINATES ASSUME THE ORIGINAL IMAGE. THE PICKLED DATA CONTAINS RESIZED VERSIONS (32 by 32) OF THESE IMAGES
+
+![png](Dataset Exploration.png)
 
 #### Dataset Summary
 I used the numpy library to calculate summary statistics of the traffic signs data set:
