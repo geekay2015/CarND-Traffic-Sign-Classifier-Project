@@ -43,7 +43,7 @@ The pickled data is a dictionary with 4 key/value pairs:
 'sizes' is a list containing tuples, (width, height) representing the the original width and height the image.
 'coords' is a list containing tuples, (x1, y1, x2, y2) representing coordinates of a bounding box around the sign in the image. THESE COORDINATES ASSUME THE ORIGINAL IMAGE. THE PICKLED DATA CONTAINS RESIZED VERSIONS (32 by 32) OF THESE IMAGES
 
-![png](Dataset Exploration.png)
+![png](https://github.com/geekay2015/CarND-Traffic-Sign-Classifier-Project/blob/master/Traffic_Sign_Classifier-Copy2_files/Dataset%20Exploration.png)
 
 #### Dataset Summary
 I used the numpy library to calculate summary statistics of the traffic signs data set:
