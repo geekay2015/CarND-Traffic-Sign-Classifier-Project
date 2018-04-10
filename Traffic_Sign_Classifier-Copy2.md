@@ -20,7 +20,7 @@ The project submission includes the below file.
 
 * HTML output of the code [HTML Output](https://github.com/geekay2015/CarND-Traffic-Sign-Classifier-Project/blob/master/Traffic_Sign_Classifier.html)
 
-* A writeup report [My Project writeup](https://github.com/geekay2015/CarND-Traffic-Sign-Classifier-Project/blob/master/writup.md)
+* A writeup report
 
 ### Dataset Exploration
 ----
@@ -86,7 +86,32 @@ The submission describes how the model was trained by discussing what optimizer 
 
 #### Solution Approach
 The submission describes the approach to finding a solution. Accuracy on the validation set is 0.93 or greater.
+My final model consisted of the following layers:
 
+| Layer         		|     Description	        					|
+|:---------------------:|:---------------------------------------------:|
+| Input         		| 32x32x1 grayscale image   							|
+| Convolution 5x5     	| 2x2 stride, valid padding, outputs 28x28x6 	|
+| RELU					|												|
+| Max pooling	      	| 2x2 stride,  outputs 14x14x6 				|
+| Convolution 5x5	    | 2x2 stride, valid padding, outputs 10x10x16    |
+| RELU					|												|
+| Max pooling	      	| 2x2 stride,  outputs 5x5x16 				|
+| Convolution 1x1	    | 2x2 stride, valid padding, outputs 1x1x412    |
+| RELU					|												|
+| Fully connected		| input 412, output 122        									|
+| RELU					|												|
+| Dropout				| 50% keep        									|
+| Fully connected		| input 122, output 84        									|
+| RELU					|												|
+| Dropout				| 50% keep        									|
+| Fully connected		| input 84, output 43        									|
+
+
+My final model results were:
+* training set accuracy of 100.0%
+* validation set accuracy of 99.3%
+* test set accuracy of 94.2%
 
 ### Testing my model on New images
 ----
@@ -94,12 +119,61 @@ The submission describes the approach to finding a solution. Accuracy on the val
 The submission includes five new German Traffic signs found on the web, and the images are visualized. Discussion is made as to particular qualities of the images or traffic signs in the images that are of interest, such as whether they would be difficult for the model to classify.
 Here is an example of 1 image I changed at random. More can be seen further in the document, but the original is on the right and the randomized opencv affine change is on the left. Small rotations are also visible further along as stated.
 
+To give yourself more insight into how your model is working, download at least five pictures of German traffic signs from the web and use your model to predict the traffic sign type.
+
+You may find `signnames.csv` useful as it contains mappings from the class id (integer) to the actual sign name.
+
+
+
+![png](Traffic_Sign_Classifier-Copy2_files/Traffic_Sign_Classifier-Copy2_30_0.png)
+
+
+
+
+
+![png](Traffic_Sign_Classifier-Copy2_files/Traffic_Sign_Classifier-Copy2_31_0.png)
+
 #### Performance on New Images
 The submission documents the performance of the model when tested on the captured images. The performance on the new images is compared to the accuracy results of the test set.
-
+    Image 1
+    Image Accuracy = 1.000
+    
+    Image 2
+    Image Accuracy = 1.000
+    
+    Image 3
+    Image Accuracy = 1.000
+    
+    Image 4
+    Image Accuracy = 1.000
+    
+    Image 5
+    Image Accuracy = 1.000
+    
+    Image 6
 #### Model Certainty - Softmax Probabilities
 The top five softmax probabilities of the predictions on the captured images are outputted. The submission discusses how certain or uncertain the model is of its predictions.
+![png](Traffic_Sign_Classifier-Copy2_files/Traffic_Sign_Classifier-Copy2_38_0.png)
 
+
+
+![png](Traffic_Sign_Classifier-Copy2_files/Traffic_Sign_Classifier-Copy2_38_1.png)
+
+
+
+![png](Traffic_Sign_Classifier-Copy2_files/Traffic_Sign_Classifier-Copy2_38_2.png)
+
+
+
+![png](Traffic_Sign_Classifier-Copy2_files/Traffic_Sign_Classifier-Copy2_38_3.png)
+
+
+
+![png](Traffic_Sign_Classifier-Copy2_files/Traffic_Sign_Classifier-Copy2_38_4.png)
+
+
+
+![png](Traffic_Sign_Classifier-Copy2_files/Traffic_Sign_Classifier-Copy2_38_5.png)
 
 I increased the train dataset size to 89860 and also merged and then remade another validation dataset.  Now no image class in the train set has less then 1000 images
 
@@ -368,51 +442,16 @@ You may find `signnames.csv` useful as it contains mappings from the class id (i
 
 
 
-    Image 1
-    Image Accuracy = 1.000
-    
-    Image 2
-    Image Accuracy = 1.000
-    
-    Image 3
-    Image Accuracy = 1.000
-    
-    Image 4
-    Image Accuracy = 1.000
-    
-    Image 5
-    Image Accuracy = 1.000
-    
-    Image 6
+
     Image Accuracy = 1.000
     
 
 
-### Output Top 5 Softmax Probabilities For Each Image Found on the Web
 
+### References
+----
+[1] Lecun(1998): Gradient-Based Learning Applied to Document Recognition
 
+[2] Sermanet(2011): Traffic Sign Recognition with Multi-Scale Convolutional Networks
 
-![png](Traffic_Sign_Classifier-Copy2_files/Traffic_Sign_Classifier-Copy2_38_0.png)
-
-
-
-![png](Traffic_Sign_Classifier-Copy2_files/Traffic_Sign_Classifier-Copy2_38_1.png)
-
-
-
-![png](Traffic_Sign_Classifier-Copy2_files/Traffic_Sign_Classifier-Copy2_38_2.png)
-
-
-
-![png](Traffic_Sign_Classifier-Copy2_files/Traffic_Sign_Classifier-Copy2_38_3.png)
-
-
-
-![png](Traffic_Sign_Classifier-Copy2_files/Traffic_Sign_Classifier-Copy2_38_4.png)
-
-
-
-![png](Traffic_Sign_Classifier-Copy2_files/Traffic_Sign_Classifier-Copy2_38_5.png)
-
-
-
+[3] Ciresan (2012): Multi-Column Deep Neural Network for Traffic Sign Classification
