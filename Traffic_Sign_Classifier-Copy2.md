@@ -1,7 +1,7 @@
 
 [![Udacity - Self-Driving Car NanoDegree](https://s3.amazonaws.com/udacity-sdc/github/shield-carnd.svg)](http://www.udacity.com/drive)
 
-# Gangadhar's Traffic Sign Recognition using Neural Network
+# Gangadhar's Deep learning model that learns to recognize traffic signs
 
 **Building a Traffic Sign Recognition Project**
 
@@ -13,17 +13,29 @@ The goals / steps of this project are the following:
 * Analyze the softmax probabilities of the new images
 * Summarize the results with a written report
 
-### Files Submitted
-----
-The project submission includes the below file.
-* Ipython notebook [Jupyter Notebook](https://github.com/geekay2015/CarND-Traffic-Sign-Classifier-Project/blob/master/Traffic_Sign_Classifier.ipynb)
+## Highlights of this approach
+* The traffic sign dataset that we will be working on is GTSRB — German Traffic Signs.
+* The approach used is deep learning.
+* The type of neural network used is a Convolutional Neural Network (CNN) paired with a Linear classifier.
+* The architecture used will be an adaptation of the VGGNet.
+* Python is the language used to program this.
+* The complete source code can be found [here](https://github.com/geekay2015/CarND-Traffic-Sign-Classifier-Project/blob/master/Traffic_Sign_Classifier.ipynb)
 
-* HTML output of the code [HTML Output](https://github.com/geekay2015/CarND-Traffic-Sign-Classifier-Project/blob/master/Traffic_Sign_Classifier.html)
 
-* A writeup report
+
 
 ### Dataset Exploration
 ----
+
+### Understand the Dataset
+For a classification problem like traffic signs, the first step is to understand that the dataset components
+* Features — The actual data that will be fed into the network / model i.e images containing traffic signs
+* Labels — The category under which the data that is fed, is likely to fall unde i.e the name of the traffic signs
+
+The per label and across label distribution of data
+* Image type — RGB/ Grayscale , 8 bit/16 bit/ 32 bit datatype
+* The non uniformity in distribution of data( More images in one traffic sign and lesser in another)
+* Even the quality of the images has to come up with a general image pre-processing and augmentation algorithm
 
 #### Dataset Summary
 I used the numpy library to calculate summary statistics of the traffic signs data set:
@@ -57,11 +69,12 @@ After this point I also detail the dataset structure by plotting the occurrence 
 ----
 
 #### Preprocessing Techniques useed
-I used below proeprocessing techniques:
-1. At first I tried to convert it to YUV as that was what the technical paper described that was authored by Pierre Sermanet and Yann LeCun. I had difficulty getting this working at so I skipped over this in order to meet my time requirements.
 
-2. grayscaling 
-The next step, I decided to convert the images to grayscale because in the technical paper it outlined several steps they used to achieve 99.7%. I assume this works better because the excess information only adds extra confusion into the learning process. After the grayscale I also normalized the image data because I've read it helps in speed of training and performance because of things like resources. Also added additional images to the datasets through randomized modifications.
+My preprocessing pipeline consists of the following steps:
+* Conversion to grayscale: It didn't significantly change the accuracy, but it made it easier to do the normalization.
+* Saturating the intensity values at 1 and 99 percentile.
+* Min/max normalization to the [0, 1] range.
+* Subtraction of its mean from the image, making the values centered around 0 and in the [-1, 1] range.
 
 Here is an example of a traffic sign images that were randomly selected.
 
@@ -73,19 +86,15 @@ Here is a look at the normalized images. Which should look identical, but for so
 
 
 #### Model Architecture
-1. Details of the characteristics and qualities of the architecture, 
-2. including the type of model used, the number of layers, 
-3. and the size of each layer. 
-4. Visualizations emphasizing particular qualities of the architecture are encouraged.
-At first I wasn't going to do this part because I didn't have enough time, but I took an extra day and decided to turn this in on the 28th rather then the 27th. I did a few random alterations to the images and saved multiple copies of them depending on the total images in the dataset class type.
+My architecture is a deep convolutional neural network inspired by LeNet[1].I used LeNet as my base model and started playing with it. This is the point where I experimented a lot and tried to tune the parameter in the network
 
 
-#### Model Training
-The submission describes how the model was trained by discussing what optimizer was used, batch size, number of epochs and values for hyperparameters.
+In addition, two additional functions/parameters to the network to help combat overfitting. The first is a dropout layer (thanks Professor Hinton!). Dropout applies a Bernoulli distribution to activations (i.e. the values being passed) during the feed-forward phase - essentially zeroing values randomly by p, where p is the probability the activation will be passed forward successfully. By applying dropout, the network is forced to confirm the values it produces again and again, so that anything that persists is a very generalized signal and not "training-sample-specific" noise.
 
+During training, p was set to 0.5. There is an ample amount of training data to make up for the low probability of successfully passing the activation.
 
-#### Solution Approach
-The submission describes the approach to finding a solution. Accuracy on the validation set is 0.93 or greater.
+Lastly, I applied L2 regularization to my Cross Entropy error when updating my weights. L2 regularization is used to penalize large errors. By doing this, we prevent our weights from changing too much, too quickly and overfitting our training sample. I used a L2 "strength" of 1E−6.
+
 My final model consisted of the following layers:
 
 | Layer         		|     Description	        					|
@@ -106,6 +115,37 @@ My final model consisted of the following layers:
 | RELU					|												|
 | Dropout				| 50% keep        									|
 | Fully connected		| input 84, output 43        									|
+
+
+#### Model Training
+* Optimization algorithm
+To train the model, I used AdamOptimizer (adaptive moment estimation) which is A Method for Stochastic Optimization. 
+I used the  Adam optimization algorithms as it is
+    * Straightforward to implement.
+    * Computationally efficient.
+    * requires Little memory.
+    * Well suited for problems that are large in terms of data and/or parameters.
+    * Appropriate for non-stationary objectives.
+    * Appropriate for problems with very noisy/or sparse gradients.
+    * Hyper-parameters have intuitive interpretation and typically require little tuning.
+
+* Batch Size - a batch size of 100, 
+* EPOCH - One Epoch is when an ENTIRE dataset is passed forward and backward through the neural network only ONCE. I used at most 27 epochs
+* a learn rate of 0.009
+
+I saved the model with the best validation accuracy. My final model results were:
+* training set accuracy of 100.0%
+* validation set accuracy of 99.4%
+* test set accuracy of 94.9%
+
+
+![png](Traffic_Sign_Classifier-Copy2_files/Traffic_Sign_Classifier-Copy2_26_0.png)
+![png](Traffic_Sign_Classifier-Copy2_files/Traffic_Sign_Classifier-Copy2_26_1.png)
+
+
+
+#### Solution Approach
+The submission describes the approach to finding a solution. Accuracy on the validation set is 0.93 or greater.
 
 
 My final model results were:
@@ -193,259 +233,6 @@ I increased the train dataset size to 89860 and also merged and then remade anot
 
 ![png](Traffic_Sign_Classifier-Copy2_files/Traffic_Sign_Classifier-Copy2_18_0.png)
 
-#### 3. Describe, and identify where in your code, what your final model architecture looks like including model type, layers, layer sizes, connectivity, etc.) Consider including a diagram and/or table describing the final model.
-
-My final model consisted of the following layers:
-
-| Layer         		|     Description	        					|
-|:---------------------:|:---------------------------------------------:|
-| Input         		| 32x32x1 grayscale image   							|
-| Convolution 5x5     	| 2x2 stride, valid padding, outputs 28x28x6 	|
-| RELU					|												|
-| Max pooling	      	| 2x2 stride,  outputs 14x14x6 				|
-| Convolution 5x5	    | 2x2 stride, valid padding, outputs 10x10x16    |
-| RELU					|												|
-| Max pooling	      	| 2x2 stride,  outputs 5x5x16 				|
-| Convolution 1x1	    | 2x2 stride, valid padding, outputs 1x1x412    |
-| RELU					|												|
-| Fully connected		| input 412, output 122        									|
-| RELU					|												|
-| Dropout				| 50% keep        									|
-| Fully connected		| input 122, output 84        									|
-| RELU					|												|
-| Dropout				| 50% keep        									|
-| Fully connected		| input 84, output 43        									|
-
-
-#### 4. Describe how, and identify where in your code, you trained your model. The discussion can include the type of optimizer, the batch size, number of epochs and any hyperparameters such as learning rate.
-
-The code for training the model is located in the 14th to 16th cell of the ipython notebook.
-
-To train the model, I used an LeNet for the most part that was given, but I did add an additional convolution without a max pooling layer after it like in the udacity lesson.  I used the AdamOptimizer with a learning rate of 0.00097.  The epochs used was 27 while the batch size was 156.  Other important parameters I learned were important was the number and distribution of additional data generated.  I played around with various different distributions of image class counts and it had a dramatic effect on the training set accuracy.  It didn't really have much of an effect on the test set accuracy, or real world image accuracy.  Even just using the default settings from the Udacity lesson leading up to this point I was able to get 94% accuracy with virtually no changes on the test set.  When I finally stopped testing I got 94-95.2% accuracy on the test set though so I think the extra data improved training accuracy, but not a huge help for test set accuracy.  Although this did help later on with the images from the internet.
-
-#### 5. Describe the approach taken for finding a solution. Include in the discussion the results on the training, validation and test sets and where in the code these were calculated. Your approach may have been an iterative process, in which case, outline the steps you took to get to the final solution and why you chose those steps. Perhaps your solution involved an already well known implementation or architecture. In this case, discuss why you think the architecture is suitable for the current problem.
-
-
-My final model results were:
-* training set accuracy of 100.0%
-* validation set accuracy of 99.3%
-* test set accuracy of 94.2%
-
-If an iterative approach was chosen:
-* What was the first architecture that was tried and why was it chosen?
-  *  I used a very similar architecture to the paper offered by the instructors.  I used it because they got such a good score the answer was given through it.
-* What were some problems with the initial architecture?
-  *  The first issue was lack of data for some images and the last was lack of knowledge of all the parameters.  After I fixed those issues the LeNet model given worked pretty well with the defaults.  I still couldn't break 98% very easily until I added another convolution.  After that it was much faster at reaching higher accuracy scores.
-* How was the architecture adjusted and why was it adjusted?
-  * Past what was said in the previous question, I didn't alter much past adding a couple dropouts with a 50% probability.
-* Which parameters were tuned? How were they adjusted and why?
-  * Epoch, learning rate, batch size, and drop out probability were all parameters tuned along with the number of random modifications to generate more image data was tuned.  For Epoch the main reason I tuned this was after I started to get better accuracy early on I lowered the number once I had confidence I could reach my accuracy goals.  The batch size I increased only slightly since starting once I increased the dataset size.  The learning rate I think could of been left at .001 which is as I am told a normal starting point, but I just wanted to try something different so .00097 was used.  I think it mattered little.  The dropout probability mattered a lot early on, but after awhile I set it to 50% and just left it.  The biggest thing that effected my accuracy was the data images generated with random modifications.  This would turn my accuracy from 1-10 epochs from 40% to 60% max to 70% to 90% within the first few evaluations. Increasing the dataset in the correct places really improved the max accuracy as well.
-* What are some of the important design choices and why were they chosen? I think I could go over this project for another week and keep on learning.  I think this is a good question and I could still learn more about that.  I think the most important thing I learned was having a more uniform dataset along with enough convolutions to capture features will greatly improve speed of training and accuracy.
-
-### Test a Model on New Images
-
-#### 1. Choose five German traffic signs found on the web and provide them in the report. For each image, discuss what quality or qualities might be difficult to classify.
-
-Here are five German traffic signs that I found on the web:
-
-I used semi-easy images to classify and even modified them slightly.  I made them all uniform in size and only had one partially cut off.
-
-#### 2. Discuss the model's predictions on these new traffic signs and compare the results to predicting on the test set. Identify where in your code predictions were made. At a minimum, discuss what the predictions were, the accuracy on these new predictions, and compare the accuracy to the accuracy on the test set (OPTIONAL: Discuss the results in more detail as described in the "Stand Out Suggestions" part of the rubric).
-
-
-####2. Discuss the model's predictions on these new traffic signs and compare the results to predicting on the test set. Identify where in your code predictions were made. At a minimum, discuss what the predictions were, the accuracy on these new predictions, and compare the accuracy to the accuracy on the test set (OPTIONAL: Discuss the results in more detail as described in the "Stand Out Suggestions" part of the rubric).
-
-Here are the results of the prediction:
-
-The model was able to correctly guess 5 of the 5 traffic signs, which gives an accuracy of 100%. This compares favorably to the accuracy on the test set although I did throw it a softball.
-
-#### 3. Describe how certain the model is when predicting on each of the five new images by looking at the softmax probabilities for each prediction and identify where in your code softmax probabilities were outputted. Provide the top 5 softmax probabilities for each image along with the sign type of each probability. (OPTIONAL: as described in the "Stand Out Suggestions" part of the rubric, visualizations can also be provided such as bar charts)
-
-
-### Model Architecture
-
-### Train, Validate and Test the Model
-
-A validation set can be used to assess how well the model is performing. A low accuracy on the training and validation
-sets imply underfitting. A high accuracy on the training set but low accuracy on the validation set implies overfitting.
-
-
-
-    (?, 28, 28, 6)
-    (?, 14, 14, 6)
-    
-    (?, 10, 10, 16)
-    (?, 5, 5, 16)
-    
-    (?, 1, 1, 412)
-    (?, 1, 1, 412)
-    
-
-
-
-
-    Training...
-    
-    EPOCH 1 ...
-    Test Accuracy = 0.907
-    Validation Accuracy = 0.790
-    
-    EPOCH 2 ...
-    Test Accuracy = 0.968
-    Validation Accuracy = 0.909
-    
-    EPOCH 3 ...
-    Test Accuracy = 0.985
-    Validation Accuracy = 0.949
-    
-    EPOCH 4 ...
-    Test Accuracy = 0.987
-    Validation Accuracy = 0.959
-    
-    EPOCH 5 ...
-    Test Accuracy = 0.993
-    Validation Accuracy = 0.968
-    
-    EPOCH 6 ...
-    Test Accuracy = 0.993
-    Validation Accuracy = 0.969
-    
-    EPOCH 7 ...
-    Test Accuracy = 0.996
-    Validation Accuracy = 0.975
-    
-    EPOCH 8 ...
-    Test Accuracy = 0.997
-    Validation Accuracy = 0.981
-    
-    EPOCH 9 ...
-    Test Accuracy = 0.998
-    Validation Accuracy = 0.980
-    
-    EPOCH 10 ...
-    Test Accuracy = 0.998
-    Validation Accuracy = 0.985
-    
-    EPOCH 11 ...
-    Test Accuracy = 0.998
-    Validation Accuracy = 0.986
-    
-    EPOCH 12 ...
-    Test Accuracy = 0.999
-    Validation Accuracy = 0.989
-    
-    EPOCH 13 ...
-    Test Accuracy = 0.999
-    Validation Accuracy = 0.987
-    
-    EPOCH 14 ...
-    Test Accuracy = 0.999
-    Validation Accuracy = 0.989
-    
-    EPOCH 15 ...
-    Test Accuracy = 0.996
-    Validation Accuracy = 0.988
-    
-    EPOCH 16 ...
-    Test Accuracy = 0.999
-    Validation Accuracy = 0.987
-    
-    EPOCH 17 ...
-    Test Accuracy = 0.999
-    Validation Accuracy = 0.990
-    
-    EPOCH 18 ...
-    Test Accuracy = 0.999
-    Validation Accuracy = 0.990
-    
-    EPOCH 19 ...
-    Test Accuracy = 0.999
-    Validation Accuracy = 0.990
-    
-    EPOCH 20 ...
-    Test Accuracy = 1.000
-    Validation Accuracy = 0.990
-    
-    EPOCH 21 ...
-    Test Accuracy = 0.999
-    Validation Accuracy = 0.990
-    
-    EPOCH 22 ...
-    Test Accuracy = 0.998
-    Validation Accuracy = 0.986
-    
-    EPOCH 23 ...
-    Test Accuracy = 1.000
-    Validation Accuracy = 0.992
-    
-    EPOCH 24 ...
-    Test Accuracy = 1.000
-    Validation Accuracy = 0.986
-    
-    EPOCH 25 ...
-    Test Accuracy = 1.000
-    Validation Accuracy = 0.993
-    
-    EPOCH 26 ...
-    Test Accuracy = 0.999
-    Validation Accuracy = 0.991
-    
-    EPOCH 27 ...
-    Test Accuracy = 1.000
-    Validation Accuracy = 0.994
-    
-    Model saved
-
-
-
-
-
-![png](Traffic_Sign_Classifier-Copy2_files/Traffic_Sign_Classifier-Copy2_26_0.png)
-
-
-
-![png](Traffic_Sign_Classifier-Copy2_files/Traffic_Sign_Classifier-Copy2_26_1.png)
-
-
-
-
-    Train Accuracy = 1.000
-    Valid Accuracy = 0.994
-    Test Accuracy = 0.949
-
-
-## Step 3: Test a Model on New Images
-
-To give yourself more insight into how your model is working, download at least five pictures of German traffic signs from the web and use your model to predict the traffic sign type.
-
-You may find `signnames.csv` useful as it contains mappings from the class id (integer) to the actual sign name.
-
-
-
-![png](Traffic_Sign_Classifier-Copy2_files/Traffic_Sign_Classifier-Copy2_30_0.png)
-
-
-
-
-
-![png](Traffic_Sign_Classifier-Copy2_files/Traffic_Sign_Classifier-Copy2_31_0.png)
-
-
-### Predict the Sign Type for Each Image
-
-
-
-    My Data Set Accuracy = 1.000
-
-
-### Analyze Performance
-
-
-
-
-    Image Accuracy = 1.000
-    
-
 
 
 ### References
@@ -455,3 +242,8 @@ You may find `signnames.csv` useful as it contains mappings from the class id (i
 [2] Sermanet(2011): Traffic Sign Recognition with Multi-Scale Convolutional Networks
 
 [3] Ciresan (2012): Multi-Column Deep Neural Network for Traffic Sign Classification
+
+
+### Conclusion
+----
+This project gave me steep learning curve and for the first time, I experimented different architecture of Convolutional Neural Network. This motivated me to experiment more and think of new architecture also.
