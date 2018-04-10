@@ -208,3 +208,12 @@ The model was able to correctly guess 5 of the 5 traffic signs, which gives an a
 #### 3. Describe how certain the model is when predicting on each of the five new images by looking at the softmax probabilities for each prediction and identify where in your code softmax probabilities were outputted. Provide the top 5 softmax probabilities for each image along with the sign type of each probability. (OPTIONAL: as described in the "Stand Out Suggestions" part of the rubric, visualizations can also be provided such as bar charts)
 
 The answer to this question is above.
+
+### Reference
+----
+[1] Lecun(1998): Gradient-Based Learning Applied to Document Recognition
+
+[2] Sermanet(2011): Traffic Sign Recognition with Multi-Scale Convolutional Networks
+
+[3] Ciresan (2012): Multi-Column Deep Neural Network for Traffic Sign Classification
+
