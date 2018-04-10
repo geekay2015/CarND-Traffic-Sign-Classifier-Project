@@ -13,30 +13,28 @@ The goals / steps of this project are the following:
 * Analyze the softmax probabilities of the new images
 * Summarize the results with a written report
 
+### Files Submitted
+----
+The project submission includes the below file.
+* Ipython notebook [project code](https://github.com/geekay2015/CarND-Traffic-Sign-Classifier-Project/blob/master/Traffic_Sign_Classifier.ipynb)
 
-## Rubric Points
-### Here I will consider the rubric points individually and describe how I addressed each point in my implementation. This is a summary. Continue further to read each in depth.
+* HTML output of the code [project code](https://github.com/geekay2015/CarND-Traffic-Sign-Classifier-Project/blob/master/Traffic_Sign_Classifier.html)
 
-1. Files submitted, from everything I read a HTML file, notebook, and write up file is required. So this will meet requirements.
-2. Dataset summary & visualization, the rubric is referring to explaining the size of the dataset and shape of the data therein. It also would like visual explorations.
-3 .Design & test model: which includes preprocessing, model architecture, training, and solution. This was basically given to us for the most part in the with LeNet. The preprocessing from what I have read is many common tasks especially in the paper referenced by the instructors. It outlined the types of data preprocessing and I have tried to implement as much I could time permitting. This includes changing from 3 color channels to 1 so grayscale and then also normalizing the image data so it is smaller numbers. I also did some random augmentation mostly slight edging of the image in random directions, or tilting and then adding those new images to the data set and redistributing it to the train and validation sets while leaving the test set alone. For training again this was basically given using the AdamOptimizer. It worked really well so I didn't change it from the last quiz before this project. The more important parts of the training in the instance I think is the epoch which was 27 and batch size was 158. I also used a learning rate of 0.00097 because it gave good results. Lastly in regards to the solution, or model design I used the default given to me except I did add two drops outs and adjusted the size of the layers to better represent the actual data since it is 32x32 and not 28x28. I also added another convolution.
-4. Test model on new images, I found new images on the internet and tried to find images that were already classified out of the 43 classes. It wasn't difficult, but at first I did try images that were very difficult to classify and it didn't do that well. After I found images of signs that were severely damaged it identified the images fairly well. I did scale my images perfectly to 32x32 as well which is probably some what limiting to real scenarios. Finally I also show the probabilities reduced for softmax probabilities and also individual performance along with total performance for all.
+* A writeup report [project code](https://github.com/geekay2015/CarND-Traffic-Sign-Classifier-Project/blob/master/writup.md)
 
+### Dataset Exploration
+----
 
-### Data Set Summary & Exploration
-
-### 1. Provide a basic summary of the data set and identify where in your code the summary was done. In the code, the analysis should be done using python, numpy and/or pandas methods rather than hardcoding results manually.
-
+#### Dataset Summary
 I used the numpy library to calculate summary statistics of the traffic signs data set:
 * The size of training set is 34799
 * The size of test set is 12630
 * The shape of a traffic sign image is (32, 32, 3)
 * The number of unique classes/labels in the data set is 43
 
-#### 2. Include an exploratory visualization of the dataset and identify where the code is in your code file.
-
-Here is an exploratory visualization of the data set. It pulls in a random set of eight images and labels them with the correct names in reference with the csv file to their respective id's.
-
+#### Exploratory visualization
+Here is an exploratory visualization of the data set. 
+It pulls in a random set of eight images and labels them with the correct names in reference with the csv file to their respective id's.
 
 ![png](Traffic_Sign_Classifier-Copy2_files/Traffic_Sign_Classifier-Copy2_7_0.png)
 
@@ -56,13 +54,13 @@ After this point I also detail the dataset structure by plotting the occurrence 
 ![png](Traffic_Sign_Classifier-Copy2_files/Traffic_Sign_Classifier-Copy2_8_2.png)
 
 ### Design and Test a Model Architecture
+----
 
-#### 1. Describe how, and identify where in your code, you preprocessed the image data. What tecniques were chosen and why did you choose these techniques? Consider including images showing the output of each preprocessing technique. Pre-processing refers to techniques such as converting to grayscale, normalization, etc.
+#### Preprocessing Techniques useed
+I used below proeprocessing techniques:
+1. At first I tried to convert it to YUV as that was what the technical paper described that was authored by Pierre Sermanet and Yann LeCun. I had difficulty getting this working at so I skipped over this in order to meet my time requirements.
 
-The code for this step is contained in the fifth, sixth, seventh, eighth, ninth, and tenth code cell of the IPython notebook.
-
-At first I tried to convert it to YUV as that was what the technical paper described that was authored by Pierre Sermanet and Yann LeCun. I had difficulty getting this working at so I skipped over this in order to meet my time requirements.
-
+2. grayscaling 
 The next step, I decided to convert the images to grayscale because in the technical paper it outlined several steps they used to achieve 99.7%. I assume this works better because the excess information only adds extra confusion into the learning process. After the grayscale I also normalized the image data because I've read it helps in speed of training and performance because of things like resources. Also added additional images to the datasets through randomized modifications.
 
 Here is an example of a traffic sign images that were randomly selected.
@@ -73,11 +71,34 @@ Here is a look at the normalized images. Which should look identical, but for so
 
 ![png](Traffic_Sign_Classifier-Copy2_files/Traffic_Sign_Classifier-Copy2_16_0.png)
 
-### 2. Describe how, and identify where in your code, you set up training, validation and testing data. How much data was in each set? Explain what techniques were used to split the data into these sets. (OPTIONAL: As described in the "Stand Out Suggestions" part of the rubric, if you generated additional data for training, describe why you decided to generate additional data, how you generated the data, identify where in your code, and provide example images of the additional data)
 
+#### Model Architecture
+1. Details of the characteristics and qualities of the architecture, 
+2. including the type of model used, the number of layers, 
+3. and the size of each layer. 
+4. Visualizations emphasizing particular qualities of the architecture are encouraged.
 At first I wasn't going to do this part because I didn't have enough time, but I took an extra day and decided to turn this in on the 28th rather then the 27th. I did a few random alterations to the images and saved multiple copies of them depending on the total images in the dataset class type.
 
+
+#### Model Training
+The submission describes how the model was trained by discussing what optimizer was used, batch size, number of epochs and values for hyperparameters.
+
+
+#### Solution Approach
+The submission describes the approach to finding a solution. Accuracy on the validation set is 0.93 or greater.
+
+
+### Testing my model on New images
+----
+#### Acquiring New Images
+The submission includes five new German Traffic signs found on the web, and the images are visualized. Discussion is made as to particular qualities of the images or traffic signs in the images that are of interest, such as whether they would be difficult for the model to classify.
 Here is an example of 1 image I changed at random. More can be seen further in the document, but the original is on the right and the randomized opencv affine change is on the left. Small rotations are also visible further along as stated.
+
+#### Performance on New Images
+The submission documents the performance of the model when tested on the captured images. The performance on the new images is compared to the accuracy results of the test set.
+
+#### Model Certainty - Softmax Probabilities
+The top five softmax probabilities of the predictions on the captured images are outputted. The submission discusses how certain or uncertain the model is of its predictions.
 
 
 I increased the train dataset size to 89860 and also merged and then remade another validation dataset.  Now no image class in the train set has less then 1000 images
